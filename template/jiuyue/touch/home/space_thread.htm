@@ -1,0 +1,47 @@
+<!--{template common/header}-->
+
+<!-- header start -->
+<header class="header">
+   <a href="home.php?mod=space&uid=1&do=profile&mycenter=1" class="back icon"></a>
+   <span class="name">{lang mythread}</span>
+</header>
+<!-- header end -->
+<!-- main threadlist start -->
+
+    <div class="threadlist">
+        <ul>
+        	<!--{if $list}-->
+            	<!--{loop $list $thread}-->
+                    <!--{if !$_G['setting']['mobile']['mobiledisplayorder3'] && $thread['displayorder'] > 0}-->
+                        {eval continue;}
+                    <!--{/if}-->
+                    <!--{if $thread['displayorder'] > 0 && !$displayorder_thread}-->
+                        {eval $displayorder_thread = 1;}
+                    <!--{/if}-->
+                    <!--{if $thread['moved']}-->
+                        <!--{eval $thread[tid]=$thread[closed];}-->
+                    <!--{/if}-->
+                    <li>
+                    	<a href="forum.php?mod=viewthread&tid=$thread[tid]&extra=$extra" $thread[highlight] >
+                    		<!--{hook/forumdisplay_thread_mobile $key}-->
+                    		<div class="td-tit">
+                            	<i class="icon {if in_array($thread['displayorder'], array(1, 2, 3, 4))}icon_top{elseif $thread['digest'] > 0}icon_digest{elseif $thread['attachment'] == 2 && $_G['setting']['mobile']['mobilesimpletype'] == 0}icon_tu{else}icon_floder{/if}"></i>
+                            	{$thread[subject]}
+                            </div>
+                    		<div class="td-info cl">
+                            	<span class="z">$thread[author]&nbsp;-&nbsp;{$thread[dateline]}</span>
+                                <span class="y">{$thread[replies]}&nbsp;/&nbsp;{$thread[views]}</span>
+                            </div>
+                    	</a>
+                    </li>
+                <!--{/loop}-->
+            <!--{else}-->
+                <li class="no">{lang forum_nothreads}</li>
+            <!--{/if}-->
+        </ul>
+        $multi
+    </div>
+
+<!-- main threadlist end -->
+<!--{eval $nofooter = true;}-->
+<!--{template common/footer}-->
