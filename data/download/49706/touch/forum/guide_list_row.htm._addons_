@@ -1,0 +1,30 @@
+<!--{if $list['threadcount']}-->
+    <ul>
+        <!--{loop $list['threadlist'] $key $thread}-->
+            <!--{if !$_G['setting']['mobile']['mobiledisplayorder3'] && $thread['displayorder'] > 0}-->
+                {eval continue;}
+            <!--{/if}-->
+            <!--{if $thread['displayorder'] > 0 && !$displayorder_thread}-->
+                {eval $displayorder_thread = 1;}
+            <!--{/if}-->
+            <!--{if $thread['moved']}-->
+                <!--{eval $thread[tid]=$thread[closed];}-->
+            <!--{/if}-->
+            <li>
+                <a href="forum.php?mod=viewthread&tid=$thread[tid]&extra=$extra" $thread[highlight] >
+                    <!--{hook/forumdisplay_thread_mobile $key}-->
+                    <div class="td-tit">
+                        <i class="icon {if in_array($thread['displayorder'], array(1, 2, 3, 4))}icon_top{elseif $thread['digest'] > 0}icon_digest{elseif $thread['attachment'] == 2 && $_G['setting']['mobile']['mobilesimpletype'] == 0}icon_tu{else}icon_floder{/if}"></i>
+                        {$thread[subject]}
+                    </div>
+                    <div class="td-info cl">
+                        <span class="z">$thread[author]&nbsp;-&nbsp;{$thread[dateline]}</span>
+                        <span class="y">{$thread[replies]}&nbsp;/&nbsp;{$thread[views]}</span>
+                    </div>
+                </a>
+            </li>
+        <!--{/loop}-->
+    </ul>
+<!--{else}-->
+    <p class="no">{lang guide_nothreads}</p>
+<!--{/if}-->
