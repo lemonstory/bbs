@@ -4,13 +4,13 @@
 $_config = array();
 
 // ----------------------------  CONFIG DB  ----------------------------- //
-$_config['db']['1']['dbhost'] = 'rdsbkno70qk52y8q9ntj.mysql.rds.aliyuncs.com';
-$_config['db']['1']['dbuser'] = 'share_discuz';
-$_config['db']['1']['dbpw'] = 'bQK9RvxeTJtOhxpkLvdp';
+$_config['db']['1']['dbhost'] = '';
+$_config['db']['1']['dbuser'] = '';
+$_config['db']['1']['dbpw'] = '';
 $_config['db']['1']['dbcharset'] = 'utf8';
 $_config['db']['1']['pconnect'] = '0';
-$_config['db']['1']['dbname'] = 'share_discuz';
-$_config['db']['1']['tablepre'] = 'dx3_';
+$_config['db']['1']['dbname'] = '';
+$_config['db']['1']['tablepre'] = '';
 $_config['db']['slave'] = '';
 $_config['db']['common']['slave_except_table'] = '';
 
