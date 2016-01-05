@@ -13,6 +13,7 @@ if($mod == 'mobile' && defined('IN_MOBILE')) {
 	if($_G['setting']['domain']['app']['mobile']) {
 		dheader("Location:http://".$_G['setting']['domain']['app']['mobile']);
 	} else {
+		exit('fuck!');
 		dheader("Location:".$_G['siteurl'].'forum.php?mobile=yes');
 	}
 } elseif(!$_G['setting']['mobile']['allowmobile']) {

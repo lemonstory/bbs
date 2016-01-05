@@ -1745,6 +1745,7 @@ if($_GET['action'] == 'votepoll' && submitcheck('pollsubmit', 1)) {
 
 	$hotreply = C::t('forum_hotreply_number')->fetch_by_pid($post['pid']);
 	if($_G['uid'] == $post['authorid']) {
+
 		showmessage('noreply_yourself_error', '', array(), array('msgtype' => 3));
 	}
 

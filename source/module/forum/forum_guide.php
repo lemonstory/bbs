@@ -18,7 +18,7 @@ if(!in_array($view, array('hot', 'digest', 'new', 'my', 'newthread', 'sofa'))) {
 }
 $lang = lang('forum/template');
 $navtitle = $lang['guide'].'-'.$lang['guide_'.$view];
-$perpage = 50;
+$perpage = 5;
 $start = $perpage * ($_G['page'] - 1);
 $data = array();
 if($_GET['rss'] == 1) {
