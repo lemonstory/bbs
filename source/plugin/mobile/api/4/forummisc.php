@@ -6,16 +6,18 @@
  *
  *      $Id: forummisc.php 35103 2014-11-18 10:10:29Z nemohou $
  */
+echo "11111";
 if (!defined('IN_MOBILE_API')) {
 	exit('Access Denied');
 }
 
+
 $_GET['mod'] = 'misc';
 include_once 'forum.php';
-
 class mobile_api {
 
 	function common() {
+		echo "2222";
 		if($_GET['t'] == 'common') {
 			$variable = array();
 			mobile_core::result(mobile_core::variable($variable));
@@ -23,10 +25,13 @@ class mobile_api {
 	}
 
 	function output() {
+		echo "333";
+		var_dump($_GET);
 		if($_GET['t'] == 'output') {
 			$variable = array();
 			mobile_core::result(mobile_core::variable($variable));
 		}
+		echo "444";
 	}
 
 }

@@ -47,6 +47,8 @@ class mobile_api {
 			    'forumlist' => array_values(mobile_core::getvalues($GLOBALS['forumlist'], array('/^\d+$/'), array('fid', 'name', 'threads', 'posts', 'redirect', 'todayposts', 'description', 'sublist', 'icon'))),
 			);
 		}
+
+
 		mobile_core::result(mobile_core::variable($variable));
 	}
 

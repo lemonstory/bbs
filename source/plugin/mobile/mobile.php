@@ -17,7 +17,7 @@ require_once 'source/plugin/mobile/mobile.class.php';
 $modules = array('extends', 'buyattachment', 'buythread', 'checkpost', 'connect',
 	'favforum', 'favthread', 'forumdisplay', 'forumindex',
 	'forumnav', 'forumupload', 'friend', 'hotforum', 'hotthread',
-	'login', 'myfavforum', 'myfavthread', 'mypm', 'mythread',
+	'login', 'myfavforum', 'myfavthread', 'mypm', 'mythread','myreplay',
 	'newthread', 'profile', 'publicpm', 'register', 'seccode',
 	'secure', 'sendpm', 'sendreply', 'sub_checkpost', 'sublist',
 	'toplist', 'viewthread', 'uploadavatar', 'pollvote', 'mynotelist', 'credit', 'profiles',
