@@ -4,18 +4,18 @@
 $_config = array();
 
 // ----------------------------  CONFIG DB  ----------------------------- //
-$_config['db']['1']['dbhost'] = '';
-$_config['db']['1']['dbuser'] = '';
-$_config['db']['1']['dbpw'] = '';
+$_config['db']['1']['dbhost'] = 'rdsbkno70qk52y8q9ntj.mysql.rds.aliyuncs.com';
+$_config['db']['1']['dbuser'] = 'share_bbs';
+$_config['db']['1']['dbpw'] = 'bQK9RvxeTJtOhxpkLvdp';
 $_config['db']['1']['dbcharset'] = 'utf8';
 $_config['db']['1']['pconnect'] = '0';
-$_config['db']['1']['dbname'] = '';
-$_config['db']['1']['tablepre'] = '';
+$_config['db']['1']['dbname'] = 'share_discuz';
+$_config['db']['1']['tablepre'] = 'dz_';
 $_config['db']['slave'] = '';
 $_config['db']['common']['slave_except_table'] = '';
 
 // --------------------------  CONFIG MEMORY  --------------------------- //
-$_config['memory']['prefix'] = '5xhhXg_';
+$_config['memory']['prefix'] = 'ER7E5D_';
 $_config['memory']['redis']['server'] = '';
 $_config['memory']['redis']['port'] = 6379;
 $_config['memory']['redis']['pconnect'] = 1;
@@ -50,12 +50,12 @@ $_config['output']['ajaxvalidate'] = '0';
 $_config['output']['iecompatible'] = '0';
 
 // --------------------------  CONFIG COOKIE  --------------------------- //
-$_config['cookie']['cookiepre'] = 'JBDH_';
+$_config['cookie']['cookiepre'] = '28aX_';
 $_config['cookie']['cookiedomain'] = '';
 $_config['cookie']['cookiepath'] = '/';
 
 // -------------------------  CONFIG SECURITY  -------------------------- //
-$_config['security']['authkey'] = '3591eaDIqZItAXNp';
+$_config['security']['authkey'] = '282dfegkTh6dHTdd';
 $_config['security']['urlxssdefend'] = 1;
 $_config['security']['attackevasive'] = '0';
 $_config['security']['querysafe']['status'] = 1;
