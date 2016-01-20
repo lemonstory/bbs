@@ -42,13 +42,11 @@ if(!defined('IN_UC')) {
 	$discuz->init();
 
 	require DISCUZ_ROOT.'./config/config_ucenter.php';
-
 	$get = $post = array();
-
 	$code = @$_GET['code'];
 	parse_str(authcode($code, 'DECODE', UC_KEY), $get);
 
-	if(time() - $get['time'] > 3600) {
+	if(time() - $get['time'] > 36000) {
 		exit('Authracation has expiried');
 	}
 	if(empty($get)) {
@@ -189,7 +187,26 @@ class uc_note {
 		$cookietime = 31536000;
 		$uid = intval($get['uid']);
 		if(($member = getuserbyuid($uid, 1))) {
+
 			dsetcookie('auth', authcode("$member[password]\t$member[uid]", 'ENCODE'), $cookietime);
+		}else {
+
+			//未激活状态下自动激活
+			$userdata = array(
+				'uid' => $get['uid'],
+				'username' => $get['username'],
+				'password' => $get['password'],
+				'email' => '',
+				'adminid' => 0,
+				'groupid' => 10,
+				'regdate' => $get['time'],
+				'credits' => 0,
+				'timeoffset' => 9999
+			);
+
+			$tmp = DB::insert('common_member', $userdata);
+			$tmp = DB::insert('common_member_count', array('uid'=>$get['uid']));
+			dsetcookie('auth', authcode("$get[password]\t$get[uid]", 'ENCODE'), $cookietime);
 		}
 	}
 
