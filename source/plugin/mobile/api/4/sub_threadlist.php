@@ -35,6 +35,14 @@ foreach ($_G['forum_threadlist'] as $k => $thread) {
 		$_G['forum_threadlist'][$k]['authorid'] = 0;
 	}
 	$userids[] = $thread['authorid'];
+
+//	//TODO:这里不严谨
+	$posttableid = $thread['posttableid'];
+}
+//TODO:下面可以得到主贴的内容,下个版本在搞
+$posts = array();
+if($tids) {
+	$posts['forum_post'] = C::t('forum_post')->fetch_all_by_tid($posttableid, $tids);
 }
 
 foreach(C::t('common_member')->fetch_all($userids) as $user) {
