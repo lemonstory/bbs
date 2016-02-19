@@ -7,7 +7,6 @@ $_CACHE['settings'] = array (
   'chatpmthreadlimit' => '30',
   'dateformat' => 'y-n-j',
   'doublee' => '0',
-  'login_failedtime' => '5',
   'mailauth' => '1',
   'mailauth_password' => 'password',
   'mailauth_username' => 'username@21cn.com',
