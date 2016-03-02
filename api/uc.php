@@ -55,7 +55,6 @@ if(!defined('IN_UC')) {
 
 	include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
 	$post = xml_unserialize(file_get_contents('php://input'));
-
 	if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
 		$uc_note = new uc_note();
 		echo $uc_note->$get['action']($get, $post);
@@ -176,14 +175,12 @@ class uc_note {
 	}
 
 	function synlogin($get, $post) {
-		global $_G;
 
+		global $_G;
 		if(!API_SYNLOGIN) {
 			return API_RETURN_FORBIDDEN;
 		}
-
 		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
-
 		$cookietime = 31536000;
 		$uid = intval($get['uid']);
 		if(($member = getuserbyuid($uid, 1))) {
@@ -208,6 +205,15 @@ class uc_note {
 			$tmp = DB::insert('common_member_count', array('uid'=>$get['uid']));
 			dsetcookie('auth', authcode("$get[password]\t$get[uid]", 'ENCODE'), $cookietime);
 		}
+		$discuz = C::app();
+		$discuz->var['version'] = 4;
+		$discuz->var['action'] = 'login';
+		$discuz->var['mod'] = 'logging';
+		$_GET['version'] = 4;
+		$_GET['action'] = 'login';
+		$_GET['module'] = 'login';
+		chdir("./mobile/");
+		include_once "index.php";
 	}
 
 	function synlogout($get, $post) {
