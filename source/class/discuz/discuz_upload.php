@@ -48,7 +48,7 @@ Class discuz_upload{
 			$attach['isimage'] = $this->is_image_ext($attach['ext']);
 			$attach['extension'] = $this->get_target_extension($attach['ext']);
 			$attach['attachdir'] = $this->get_target_dir($this->type, $extid);
-			$attach['attachment'] = $attach['attachdir'].$this->get_target_filename($this->type, $this->extid, $this->forcename).'.'.$attach['extension'];
+			$attach['attachment'] = $attach['attachdir'].$this->get_target_filename($this->type, $this->extid, $this->forcename,$attach).'.'.$attach['extension'];
 			$attach['target'] = getglobal('setting/attachdir').'./'.$this->type.'/'.$attach['attachment'];
 			$this->attach = & $attach;
 			$this->errorcode = 0;
@@ -133,12 +133,20 @@ Class discuz_upload{
 		return $source && ($source != 'none') && (is_uploaded_file($source) || is_uploaded_file(str_replace('\\\\', '\\', $source)));
 	}
 
-	function get_target_filename($type, $extid = 0, $forcename = '') {
+	function get_target_filename($type, $extid = 0, $forcename = '',$attach = null) {
+
 		if($type == 'group' || ($type == 'common' && $forcename != '')) {
-			$filename = $type.'_'.intval($extid).($forcename != '' ? "_$forcename" : '');
+
+				$filename = $type.'_'.intval($extid).($forcename != '' ? "_$forcename" : '');
+
 		} else {
 			$filename = date('His').strtolower(random(16));
+			if($attach['isimage']) {
+				list($width, $height) = @getimagesize($attach['tmp_name']);
+				$filename = $filename."_{$width}_{$height}";
+			}
 		}
+
 		return $filename;
 	}
 
