@@ -10,7 +10,7 @@
 define('APPTYPEID', 0);
 define('CURSCRIPT', 'member');
 
-require './source/class/class_core.php';
+require_once './source/class/class_core.php';
 
 $discuz = C::app();
 
