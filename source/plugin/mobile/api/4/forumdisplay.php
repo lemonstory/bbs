@@ -29,7 +29,9 @@ class mobile_api {
 
 	function output() {
 		global $_G;
+
 		include_once 'source/plugin/mobile/api/4/sub_threadlist.php';
+		$variable['hash'] = md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid']);
 		mobile_core::result(mobile_core::variable($variable));
 	}
 
