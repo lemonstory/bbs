@@ -34,6 +34,11 @@ class mobile_api {
 				}
 				$GLOBALS['forumlist'][$forum['fid']]['icon'] = $icon;
 			}
+			//TODO:现在是用发帖总量来展示"今日发布量",数据量大了改回来
+			if($GLOBALS['forumlist'][$forum['fid']]['posts']) {
+
+				$GLOBALS['forumlist'][$forum['fid']]['posts'] = "今日 " . $GLOBALS['forumlist'][$forum['fid']]['posts'];
+			}
 		}
 		if ($_GET['checknotice']) {
 			$variable = array();
