@@ -205,13 +205,24 @@ class uc_note {
 			$tmp = DB::insert('common_member_count', array('uid'=>$get['uid']));
 			dsetcookie('auth', authcode("$get[password]\t$get[uid]", 'ENCODE'), $cookietime);
 		}
+		//初次登录也返回用户信息 -- class_member.php->on_login调用
 		$discuz = C::app();
+		$_G['uid'] = $uid;
+		$_G['member'] = getuserbyuid($uid, 1);
+		//处理提醒通知
+		if($discuz->var['member']['newprompt']) {
+			$discuz->var['member']['newprompt_num'] = C::t('common_member_newprompt')->fetch($discuz->var['member']['uid']);
+			$discuz->var['member']['newprompt_num'] = unserialize($discuz->var['member']['newprompt_num']['data']);
+			$discuz->var['member']['category_num'] = helper_notification::get_categorynum($discuz->var['member']['newprompt_num']);
+		}
 		$discuz->var['version'] = 4;
 		$discuz->var['action'] = 'login';
 		$discuz->var['mod'] = 'logging';
 		$_GET['version'] = 4;
 		$_GET['action'] = 'login';
 		$_GET['module'] = 'login';
+
+
 		chdir("./mobile/");
 		include_once "index.php";
 	}
