@@ -18,6 +18,12 @@ include_once 'forum.php';
 class mobile_api {
 
 	function common() {
+
+		//修改:可以查看别人(或自己)的主贴
+		global $_G;
+		if(!empty($_GET['uid'])) {
+			$_G['uid'] = $_GET['uid'];
+		}
 	}
 
 	function output() {
