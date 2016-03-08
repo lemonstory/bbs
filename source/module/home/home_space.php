@@ -21,7 +21,7 @@ if(!in_array($do, array('home', 'doing', 'blog', 'album', 'share', 'wall'))) {
 	$_G['mnid'] = 'mn_common';
 }
 if(empty($_G['uid']) && in_array($_GET['do'], array('thread', 'trade', 'poll', 'activity', 'debate', 'reward'))) {
-	showmessage('login_before_enter_home', null, array(), array('showmsg' => true, 'login' => 1));
+	//showmessage('login_before_enter_home', null, array(), array('showmsg' => true, 'login' => 1));
 }
 $uid = empty($_GET['uid']) ? 0 : intval($_GET['uid']);
 
