@@ -46,13 +46,13 @@ foreach ($_G['forum_threadlist'] as $k => $thread) {
 	$_G['forum_threadlist'][$k]['attachments'] = array();
 	$_G['forum_threadlist'][$k]['imagelist'] = array();
 
-	$attachment_is_image = "2";
-	if(!$post['attachment'] && strcomp($post['attachment'],$attachment_is_image) == 0) {
+	//附件,0无附件 1普通附件 2有图片附件
+	if(!empty($post['attachment']) && intval($post['attachment']) == 2) {
 		require_once libfile('function/attachment');
 		$_G['tid'] = $post['tid'];
 		parseattach(array_keys($attachment),array(),$attachment);
 		$_G['forum_threadlist'][$k]['attachments'] = $attachment[$post['pid']]['attachments'];
-		$_G['forum_threadlist'][$k]['imagelist'] = $attachment[$post['pid']]['imagelist'];;
+		$_G['forum_threadlist'][$k]['imagelist'] = $attachment[$post['pid']]['imagelist'];
 		unset($_G['tid']);
 	}
 	//帖子列表增加图片 -end
