@@ -14,6 +14,8 @@ if (!defined('IN_MOBILE_API')) {
 $_G['wechat']['setting'] = unserialize($_G['setting']['mobilewechat']);
 
 $tids = array();
+$attachment = array();
+
 foreach ($_G['forum_threadlist'] as $k => $thread) {
 	$tids[] = $_G['forum_threadlist'][$k]['tid'] = $thread['icontid'];
 	$_G['forum_threadlist'][$k]['cover'] = array();
@@ -36,13 +38,24 @@ foreach ($_G['forum_threadlist'] as $k => $thread) {
 	}
 	$userids[] = $thread['authorid'];
 
-//	//TODO:这里不严谨
-	$posttableid = $thread['posttableid'];
-}
-//TODO:下面可以得到主贴的内容,下个版本在搞
-$posts = array();
-if($tids) {
-	$posts['forum_post'] = C::t('forum_post')->fetch_all_by_tid($posttableid, $tids);
+
+	//帖子列表增加图片 -start
+	$post = C::t('forum_post')->fetch_threadpost_by_tid_invisible($_G['forum_threadlist'][$k]['tid'],0);
+	$attachment[$post['pid']] = array();
+	$_G['forum_threadlist'][$k]['pid'] = $post['pid'];
+	$_G['forum_threadlist'][$k]['attachments'] = array();
+	$_G['forum_threadlist'][$k]['imagelist'] = array();
+
+	$attachment_is_image = "2";
+	if(!$post['attachment'] && strcomp($post['attachment'],$attachment_is_image) == 0) {
+		require_once libfile('function/attachment');
+		$_G['tid'] = $post['tid'];
+		parseattach(array_keys($attachment),array(),$attachment);
+		$_G['forum_threadlist'][$k]['attachments'] = $attachment[$post['pid']]['attachments'];
+		$_G['forum_threadlist'][$k]['imagelist'] = $attachment[$post['pid']]['imagelist'];;
+		unset($_G['tid']);
+	}
+	//帖子列表增加图片 -end
 }
 
 foreach(C::t('common_member')->fetch_all($userids) as $user) {
@@ -85,7 +98,7 @@ $_G['forum']['threadcount'] = $_G['forum_threadcount'];
 $variable = array(
     'forum' => mobile_core::getvalues($_G['forum'], array('fid', 'fup', 'name', 'threads', 'posts', 'rules', 'autoclose', 'password', 'icon', 'threadcount', 'picstyle', 'description')),
     'group' => mobile_core::getvalues($_G['group'], array('groupid', 'grouptitle')),
-    'forum_threadlist' => mobile_core::getvalues(array_values($_G['forum_threadlist']), array('/^\d+$/'), array('tid', 'author', 'special', 'authorid', 'subject', 'subject', 'dbdateline', 'dateline', 'dblastpost', 'lastpost', 'lastposter', 'attachment', 'replies', 'readperm', 'views', 'digest','heats','cover', 'recommend', 'recommend_add', 'reply', 'avatar', 'displayorder', 'coverpath', 'typeid', 'rushreply', 'replycredit', 'price')),
+    'forum_threadlist' => mobile_core::getvalues(array_values($_G['forum_threadlist']), array('/^\d+$/'), array('pid','tid', 'author', 'special', 'authorid', 'subject', 'subject', 'dbdateline', 'dateline', 'dblastpost', 'lastpost', 'lastposter', 'attachment', 'replies', 'readperm', 'views', 'digest','heats','cover', 'recommend', 'recommend_add', 'reply', 'avatar', 'displayorder', 'coverpath', 'typeid', 'rushreply', 'replycredit', 'price','attachments','imagelist')),
     'groupiconid' => $groupiconIds,
     'sublist' => mobile_core::getvalues($GLOBALS['sublist'], array('/^\d+$/'), array('fid', 'name', 'threads', 'todayposts', 'posts', 'icon')),
     'tpp' => $_G['tpp'],
