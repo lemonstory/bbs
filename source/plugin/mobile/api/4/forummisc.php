@@ -25,13 +25,10 @@ class mobile_api {
 	}
 
 	function output() {
-		echo "333";
-		var_dump($_GET);
 		if($_GET['t'] == 'output') {
 			$variable = array();
 			mobile_core::result(mobile_core::variable($variable));
 		}
-		echo "444";
 	}
 
 }
