@@ -40,11 +40,13 @@ foreach ($_G['forum_threadlist'] as $k => $thread) {
 
 
 	//帖子列表增加图片 -start
+	require_once libfile('function/discuzcode');
 	$post = C::t('forum_post')->fetch_threadpost_by_tid_invisible($_G['forum_threadlist'][$k]['tid'],0);
 	$attachment[$post['pid']] = array();
 	$_G['forum_threadlist'][$k]['pid'] = $post['pid'];
 	$_G['forum_threadlist'][$k]['attachments'] = array();
 	$_G['forum_threadlist'][$k]['imagelist'] = array();
+	$_G['forum_threadlist'][$k]['message'] = discuzcode($post['message']);
 
 	//附件,0无附件 1普通附件 2有图片附件
 	if(!empty($post['attachment']) && intval($post['attachment']) == 2) {
@@ -98,7 +100,7 @@ $_G['forum']['threadcount'] = $_G['forum_threadcount'];
 $variable = array(
     'forum' => mobile_core::getvalues($_G['forum'], array('fid', 'fup', 'name', 'threads', 'posts', 'rules', 'autoclose', 'password', 'icon', 'threadcount', 'picstyle', 'description')),
     'group' => mobile_core::getvalues($_G['group'], array('groupid', 'grouptitle')),
-    'forum_threadlist' => mobile_core::getvalues(array_values($_G['forum_threadlist']), array('/^\d+$/'), array('pid','tid', 'author', 'special', 'authorid', 'subject', 'subject', 'dbdateline', 'dateline', 'dblastpost', 'lastpost', 'lastposter', 'attachment', 'replies', 'readperm', 'views', 'digest','heats','cover', 'recommend', 'recommend_add', 'reply', 'avatar', 'displayorder', 'coverpath', 'typeid', 'rushreply', 'replycredit', 'price','attachments','imagelist')),
+    'forum_threadlist' => mobile_core::getvalues(array_values($_G['forum_threadlist']), array('/^\d+$/'), array('pid','tid', 'author', 'special', 'authorid', 'subject', 'subject','message', 'dbdateline', 'dateline', 'dblastpost', 'lastpost', 'lastposter', 'attachment', 'replies', 'readperm', 'views', 'digest','heats','cover', 'recommend', 'recommend_add', 'reply', 'avatar', 'displayorder', 'coverpath', 'typeid', 'rushreply', 'replycredit', 'price','attachments','imagelist')),
     'groupiconid' => $groupiconIds,
     'sublist' => mobile_core::getvalues($GLOBALS['sublist'], array('/^\d+$/'), array('fid', 'name', 'threads', 'todayposts', 'posts', 'icon')),
     'tpp' => $_G['tpp'],
