@@ -13,6 +13,7 @@ if(!defined('IN_MOBILE_API')) {
 
 $_GET['mod'] = 'guide';
 $_GET['view'] = 'my';
+$_GET['filter'] = 'common';
 include_once 'forum.php';
 
 class mobile_api {
@@ -29,18 +30,37 @@ class mobile_api {
 	function output() {
 		global $_G;
 
+		//帖子列表增加图片 -start
+		foreach($GLOBALS['data']['my']['threadlist'] as $k => $thread) {
+			$post = C::t('forum_post')->fetch_threadpost_by_tid_invisible($GLOBALS['data']['my']['threadlist'][$k]['tid'],0);
+			$attachment[$post['pid']] = array();
+			$GLOBALS['data']['my']['threadlist'][$k]['pid'] = $post['pid'];
+			$GLOBALS['data']['my']['threadlist'][$k]['message'] = $post['message'];
+
+			//附件,0无附件 1普通附件 2有图片附件
+			if(!empty($post['attachment']) && intval($post['attachment']) == 2) {
+				$GLOBALS['data']['my']['threadlist'][$k]['attachments'] = array();
+				$GLOBALS['data']['my']['threadlist'][$k]['imagelist'] = array();
+				require_once libfile('function/attachment');
+				$_G['tid'] = $post['tid'];
+				parseattach(array_keys($attachment),array(),$attachment);
+				$GLOBALS['data']['my']['threadlist'][$k]['attachments'] = $attachment[$post['pid']]['attachments'];
+				$GLOBALS['data']['my']['threadlist'][$k]['imagelist'] = $attachment[$post['pid']]['imagelist'];
+				unset($_G['tid']);
+			}
+		}
+		//帖子列表增加图片 -end
 		$data['forumnames'] = $GLOBALS['data']['my']['forumnames'];
-                $data['threadcount'] = $GLOBALS['data']['my']['threadcount'];
-                $data['threadlist'] = $GLOBALS['data']['my']['threadlist'];
+        $data['threadcount'] = $GLOBALS['data']['my']['threadcount'];
+        $data['threadlist'] = array_values($GLOBALS['data']['my']['threadlist']);
 		
 		$variable = array(
-			'globals'=>$GLOBALS['data'],
+			//'globals'=>$GLOBALS['data'],
 			'data' => $data,
 			'perpage' => $GLOBALS['perpage'],
 		);
 		mobile_core::result(mobile_core::variable($variable));
 	}
-
 }
 
 ?>
