@@ -6,6 +6,7 @@
  *
  *      $Id: mythread.php 34314 2014-02-20 01:04:24Z nemohou $
  */
+error_reporting(E_ALL);
 
 if(!defined('IN_MOBILE_API')) {
 	exit('Access Denied');
@@ -28,15 +29,20 @@ class mobile_api {
 	}
 
 	function output() {
+
 		global $_G;
 
 		//帖子列表增加图片 -start
+		require_once libfile('function/discuzcode');
 		foreach($GLOBALS['data']['my']['threadlist'] as $k => $thread) {
 			$post = C::t('forum_post')->fetch_threadpost_by_tid_invisible($GLOBALS['data']['my']['threadlist'][$k]['tid'],0);
 			$attachment[$post['pid']] = array();
 			$GLOBALS['data']['my']['threadlist'][$k]['pid'] = $post['pid'];
-			$GLOBALS['data']['my']['threadlist'][$k]['message'] = $post['message'];
-
+			//TODO:下面的代码直接调用discuzcode时,会报错
+			//./source/plugin/mobile/template/discuzcode.htm 文件不存在
+			//cp ./source/plugin/mobile/template/mobile/discuzcode.htm ./source/plugin/mobile/template/
+			//拷贝一份就可以了,原因未查明
+			$GLOBALS['data']['my']['threadlist'][$k]['message'] = discuzcode($post['message']);
 			//附件,0无附件 1普通附件 2有图片附件
 			if(!empty($post['attachment']) && intval($post['attachment']) == 2) {
 				$GLOBALS['data']['my']['threadlist'][$k]['attachments'] = array();
@@ -53,7 +59,7 @@ class mobile_api {
 		$data['forumnames'] = $GLOBALS['data']['my']['forumnames'];
         $data['threadcount'] = $GLOBALS['data']['my']['threadcount'];
         $data['threadlist'] = array_values($GLOBALS['data']['my']['threadlist']);
-		
+
 		$variable = array(
 			//'globals'=>$GLOBALS['data'],
 			'data' => $data,
