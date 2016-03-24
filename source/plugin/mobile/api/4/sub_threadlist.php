@@ -54,6 +54,15 @@ foreach ($_G['forum_threadlist'] as $k => $thread) {
 		$_G['tid'] = $post['tid'];
 		parseattach(array_keys($attachment),array(),$attachment);
 		$_G['forum_threadlist'][$k]['attachments'] = $attachment[$post['pid']]['attachments'];
+		//缩略图处理
+		if(!empty($_G['forum_threadlist'][$k]['attachments'])) {
+			foreach($_G['forum_threadlist'][$k]['attachments'] as $aid => $arr) {
+				if($arr['remote'] == 1) {
+					//具体的缩略尺寸参考Oss的图片规则设置
+					$_G['forum_threadlist'][$k]['attachments'][$aid]['attachment'] = $_G['forum_threadlist'][$k]['attachments'][$aid]['attachment']."@!230x230";
+				}
+			}
+		}
 		$_G['forum_threadlist'][$k]['imagelist'] = $attachment[$post['pid']]['imagelist'];
 		unset($_G['tid']);
 	}
