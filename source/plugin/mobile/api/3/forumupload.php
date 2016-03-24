@@ -36,14 +36,8 @@ if((empty($_G['uid']) && $_GET['operation'] != 'upload') || $_POST['hash'] != md
 	loadcache('usergroup_'.$_G['member']['groupid']);
 	$_G['group'] = $_G['cache']['usergroup_'.$_G['member']['groupid']];
 }
-$a = $_FILES['Filedata']['name'];
 $_FILES['Filedata']['name'] = diconv(urldecode($_FILES['Filedata']['name']), 'UTF-8');
 $_FILES['Filedata']['type'] = $_GET['filetype'];
-code $type, $attr) = getimagesize($_FILES['Filedata']['name']);
-
-//$_FILES['Filedata']['name'] = sprintf("%s_%s_%s",$_FILES['Filedata']['name'],$width,$height);
-
-$b = $_FILES['Filedata']['name'];
 
 $forumattachextensions = '';
 $fid = intval($_GET['fid']);
@@ -66,8 +60,7 @@ if($fid) {
 class forum_upload_mobile extends forum_upload {
 
 	function uploadmsg($statusid) {
-		global $a,$b;
-		$variable = array('a' => $a,'b' => $b,'code' => $statusid, 'ret' => array('aId' => $this->aid, 'image' => $this->attach['isimage'] ? 1 : 2));
+		$variable = array('code' => $statusid, 'ret' => array('aId' => $this->aid, 'image' => $this->attach['isimage'] ? 1 : 2));
 		mobile_core::result(mobile_core::variable($variable));
 	}
 

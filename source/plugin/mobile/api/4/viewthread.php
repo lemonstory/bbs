@@ -25,7 +25,7 @@ class mobile_api {
 			foreach ($GLOBALS['postlist'] as $k => $post) {
 				if (!$post['first'] && $_G['uid'] != $post['authorid'] && $_G['uid'] != $_G['forum_thread']['authorid'] && !$_G['forum']['ismoderator']) {
 					$GLOBALS['postlist'][$k]['message'] = lang('plugin/mobile', 'mobile_post_author_visible');
-					$GLOBALS['postlist'][$k]['attachments'] = array();
+					$GLOBALS['postlist'][$k]['attachments'] = (object)array();
 				}
 			}
 		}
@@ -131,6 +131,10 @@ class mobile_api {
 			$variable['postlist'][$k]['message'] = preg_replace('/(&nbsp;){2,}/', '', $variable['postlist'][$k]['message']);
 			$variable['postlist'][$k]['dateline'] = strip_tags($post['dateline']);
 			$variable['postlist'][$k]['groupiconid'] = mobile_core::usergroupIconId($post['groupid']);
+
+			if(empty($variable['postlist'][$k]['attachments'])) {
+				$variable['postlist'][$k]['attachments'] = (object)$variable['postlist'][$k]['attachments'];
+			}
 		}
 
 		if (!empty($GLOBALS['polloptions'])) {

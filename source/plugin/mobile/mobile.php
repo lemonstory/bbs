@@ -13,6 +13,10 @@ define('IN_MOBILE', 1);
 chdir('../../../');
 
 require_once 'source/plugin/mobile/mobile.class.php';
+require_once '../api.xiaoningmeng.net/model/ConfigVar.class.php';
+require_once '../api.xiaoningmeng.net/model/ModelBase.class.php';
+require_once '../api.xiaoningmeng.net/model/AliOss.class.php';
+
 
 $modules = array('extends', 'buyattachment', 'buythread', 'checkpost', 'connect',
 	'favforum', 'favthread', 'forumdisplay', 'forumindex',
