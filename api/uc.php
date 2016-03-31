@@ -52,7 +52,6 @@ if(!defined('IN_UC')) {
 	if(empty($get)) {
 		exit('Invalid Request');
 	}
-
 	include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
 	$post = xml_unserialize(file_get_contents('php://input'));
 	if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
@@ -175,19 +174,20 @@ class uc_note {
 	}
 
 	function synlogin($get, $post) {
-
 		global $_G;
 		if(!API_SYNLOGIN) {
 			return API_RETURN_FORBIDDEN;
 		}
 		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
 		$cookietime = 31536000;
+		$code = "";
 		$uid = intval($get['uid']);
 		if(($member = getuserbyuid($uid, 1))) {
-
-			dsetcookie('auth', authcode("$member[password]\t$member[uid]", 'ENCODE'), $cookietime);
+			$code = "$member[password]\t$member[uid]";
+			dsetcookie('auth', authcode($code, 'ENCODE'), $cookietime);
 		}else {
 
+			$code = "$get[password]\t$get[uid]";
 			//未激活状态下自动激活
 			$userdata = array(
 				'uid' => $get['uid'],
@@ -203,12 +203,14 @@ class uc_note {
 
 			$tmp = DB::insert('common_member', $userdata);
 			$tmp = DB::insert('common_member_count', array('uid'=>$get['uid']));
-			dsetcookie('auth', authcode("$get[password]\t$get[uid]", 'ENCODE'), $cookietime);
+			dsetcookie('auth', authcode($code, 'ENCODE'), $cookietime);
 		}
 		//初次登录也返回用户信息 -- class_member.php->on_login调用
-		$discuz = C::app();
+		require_once libfile('function/member');
 		$_G['uid'] = $uid;
 		$_G['member'] = getuserbyuid($uid, 1);
+		$_G['username'] = $_G['member']['username'];
+		$discuz = C::app();
 		//处理提醒通知
 		if($discuz->var['member']['newprompt']) {
 			$discuz->var['member']['newprompt_num'] = C::t('common_member_newprompt')->fetch($discuz->var['member']['uid']);
@@ -221,8 +223,6 @@ class uc_note {
 		$_GET['version'] = 4;
 		$_GET['action'] = 'login';
 		$_GET['module'] = 'login';
-
-
 		chdir("./mobile/");
 		include_once "index.php";
 	}

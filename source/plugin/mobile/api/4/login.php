@@ -38,9 +38,9 @@ class mobile_api {
 				}
 			}
 		}
+		$variable['formhash'] = formhash();
 		mobile_core::result(mobile_core::variable($variable));
 	}
-
 }
 
 ?>
