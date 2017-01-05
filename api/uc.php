@@ -52,12 +52,12 @@ if(!defined('IN_UC')) {
 	if(empty($get)) {
 		exit('Invalid Request');
 	}
-	include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
-	$post = xml_unserialize(file_get_contents('php://input'));
-	if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
-		$uc_note = new uc_note();
-		echo $uc_note->$get['action']($get, $post);
-		exit();
+    include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
+    $post = xml_unserialize(file_get_contents('php://input'));
+    if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
+        $uc_note = new uc_note();
+        echo call_user_func(array($uc_note,$get['action']), $get, $post);
+        exit();
 	} else {
 		exit(API_RETURN_FAILED);
 	}
@@ -183,11 +183,11 @@ class uc_note {
 		$code = "";
 		$uid = intval($get['uid']);
 		if(($member = getuserbyuid($uid, 1))) {
-			$code = "$member[password]\t$member[uid]";
+			$code = "{$member['password']}\t{$member['uid']}";
 			dsetcookie('auth', authcode($code, 'ENCODE'), $cookietime);
 		}else {
 
-			$code = "$get[password]\t$get[uid]";
+			$code = "{$get['password']}\t{$get['uid']}";
 			//未激活状态下自动激活
 			$userdata = array(
 				'uid' => $get['uid'],
