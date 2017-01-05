@@ -607,8 +607,10 @@ if(!empty($isdel_post)) {
 		$updatedisablepos = true;
 	}
 	if($updatedisablepos && !$rushreply) {
+        $nowUrl =  'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		C::t('forum_threaddisablepos')->insert(array('tid' => $_G['tid']), false, true);
-		dheader("Location:forum.php?mod=viewthread&tid=$_G[tid]");
+        //dheader("Location:forum.php?mod=viewthread&tid=$_G[tid]");//链接错误403
+		dheader($nowUrl);
 	}
 	$ordertype != 1 ? ksort($postarr) : krsort($postarr);
 }
